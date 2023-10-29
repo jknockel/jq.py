@@ -45,7 +45,7 @@ class jq_with_deps_build_ext(build_ext):
             tarball_path=oniguruma_lib_tarball_path,
             lib_dir=oniguruma_lib_build_dir,
             commands=[
-                ["./configure", "CFLAGS=-fPIC", "--prefix=" + oniguruma_lib_install_dir],
+                ["sh", "./configure", "CFLAGS=-fPIC", "--prefix=" + oniguruma_lib_install_dir],
                 ["make"],
                 ["make", "install"],
             ])
@@ -56,7 +56,7 @@ class jq_with_deps_build_ext(build_ext):
             tarball_path=jq_lib_tarball_path,
             lib_dir=jq_lib_dir,
             commands=[
-                ["./configure", "CFLAGS=-fPIC -pthread", "--disable-maintainer-mode", "--with-oniguruma=" + oniguruma_lib_install_dir],
+                ["sh", "./configure", "CFLAGS=-fPIC -pthread", "--disable-maintainer-mode", "--with-oniguruma=" + oniguruma_lib_install_dir],
                 ["make"],
             ])
 
