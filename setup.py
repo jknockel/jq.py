@@ -10,6 +10,8 @@ from setuptools import setup
 from setuptools.command.build_ext import build_ext
 from setuptools.extension import Extension
 
+def _sanitize_path(path):
+    return '/' + path[0].lower() + '/' + path[3:].replace('\\', '/') if os.name == 'nt' and path[1:3] == ':\\' else path
 
 def _path_in_dir(relative_path):
     return os.path.abspath(os.path.join(os.path.dirname(__file__), relative_path))
@@ -45,7 +47,7 @@ class jq_with_deps_build_ext(build_ext):
             tarball_path=oniguruma_lib_tarball_path,
             lib_dir=oniguruma_lib_build_dir,
             commands=[
-                ["sh", "./configure", "CFLAGS=-fPIC", "--prefix=" + oniguruma_lib_install_dir],
+                ["sh", "./configure", "CFLAGS=-fPIC", "--prefix=" + _sanitize_path(oniguruma_lib_install_dir)],
                 ["make"],
                 ["make", "install"],
             ])
@@ -56,7 +58,7 @@ class jq_with_deps_build_ext(build_ext):
             tarball_path=jq_lib_tarball_path,
             lib_dir=jq_lib_dir,
             commands=[
-                ["sh", "./configure", "CFLAGS=-fPIC -pthread", "--disable-maintainer-mode", "--with-oniguruma=" + oniguruma_lib_install_dir],
+                ["sh", "./configure", "CFLAGS=-fPIC -pthread", "--disable-maintainer-mode", "--with-oniguruma=" + _sanitize_path(oniguruma_lib_install_dir)],
                 ["make"],
             ])
 
